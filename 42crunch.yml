@@ -1,0 +1,8 @@
+---
+- name: trigger 42crunch
+  hosts: localhost
+  tasks:
+
+  - name: send project to 42crunch
+    debug:
+      msg: "42crunch policy analysis: stage {{ stage }}"

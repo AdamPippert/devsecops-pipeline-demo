@@ -1,0 +1,8 @@
+---
+- name: trigger a jenkins build
+  hosts: localhost
+  tasks:
+
+  - name: send project to jenkins
+    debug:
+      msg: "project sent to jenkins: stage {{ stage }}"

@@ -1,0 +1,8 @@
+---
+- name: trigger automated unit testing
+  hosts: localhost
+  tasks:
+
+  - name: send project to sonarqube
+    debug:
+      msg: "Automated Unit Testing: stage {{ stage }}"

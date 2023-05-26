@@ -1,0 +1,8 @@
+---
+- name: trigger TCOE stack
+  hosts: localhost
+  tasks:
+
+  - name: send project to TCOE stack
+    debug:
+      msg: "project sent to TCOE framework: stage {{ stage }}"

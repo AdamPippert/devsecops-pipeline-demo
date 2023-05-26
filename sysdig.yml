@@ -1,0 +1,8 @@
+---
+- name: trigger sysdig
+  hosts: localhost
+  tasks:
+
+  - name: send project to sysdig
+    debug:
+      msg: "Sysdig container analysis: stage {{ stage }}"

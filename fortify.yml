@@ -1,0 +1,8 @@
+---
+- name: trigger a fortify scan
+  hosts: localhost
+  tasks:
+
+  - name: send project to fortify
+    debug:
+      msg: "Fortify SCA initiatedt stage {{ stage }}"

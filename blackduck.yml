@@ -1,0 +1,8 @@
+---
+- name: trigger blackduck
+  hosts: localhost
+  tasks:
+
+  - name: send project to blackduck
+    debug:
+      msg: "BlackDuck composition analysis: stage {{ stage }}"

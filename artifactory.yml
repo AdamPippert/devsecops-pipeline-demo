@@ -1,0 +1,8 @@
+---
+- name: trigger artifactory to archive artifact
+  hosts: localhost
+  tasks:
+
+  - name: send project to jenkins
+    debug:
+      msg: "promoting stage in artifactory: stage {{ stage }}"
