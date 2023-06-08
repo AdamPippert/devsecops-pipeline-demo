@@ -1,0 +1,68 @@
+---
+- name: Workflow generator for Staging stage of DevSecOps pipeline
+  hosts: localhost
+  vars:
+    stage: staging  
+
+  tasks:
+  - name: create workflow for pipeline run
+    - name: Create a workflow job template with workflow nodes in template
+  awx.awx.workflow_job_template:
+    name: DevSecOps Workflow
+    inventory: Demo Inventory
+    workflow_nodes:
+      - identifier: Build
+        unified_job_template:
+          name: example-project
+          organization:
+            name: Default
+          name: Build  
+          type: workflow_job_template
+        related:
+          success_nodes: []
+          failure_nodes:
+            - identifier: node201
+          always_nodes: []
+          credentials: []
+      - identifier: Non-Prod
+        unified_job_template:
+          organization:
+            name: Default
+          name: Non-Prod
+          type: workflow_job_template
+        credentials: []
+        related:
+          success_nodes:
+            - identifier: Build
+          failure_nodes: []
+          always_nodes: []
+          credentials: []
+      - identifier: Staging
+        unified_job_template:
+          organization:
+            name: Default
+          name: Staging
+          type: workflow_job_template
+        related:
+          success_nodes: 
+            - identifier: Non-Prod
+          failure_nodes: []
+          always_nodes: []
+          credentials: []
+      - identifier: Production
+        unified_job_template:
+          organization:
+            name: Default
+          name: Production
+          type: workflow_job_template
+        related:
+          success_nodes: 
+            - identifier: Staging
+          failure_nodes: []
+          always_nodes: []
+          credentials: []
+  register: result 
+
+
+
+
