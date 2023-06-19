@@ -4,16 +4,15 @@
   
   tasks:
   - name: create workflow for pipeline run
-    - name: Create a workflow job template with workflow nodes in template
-  awx.awx.workflow_job_template:
-    name: DevSecOps Workflow
-    inventory: Demo Inventory
-    workflow_nodes:
-      - identifier: Build
-        unified_job_template:
+    awx.awx.workflow_job_template:
+      name: DevSecOps Workflow
+      inventory: Demo Inventory
+      workflow_nodes:
+        - identifier: Build
+          unified_job_template:
           name: example-project
           organization:
-            name: Default
+              name: Default
           name: Build  
           type: workflow_job_template
         related:
