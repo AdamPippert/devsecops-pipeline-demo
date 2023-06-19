@@ -18,8 +18,7 @@
           type: workflow_job_template
         related:
           success_nodes: []
-          failure_nodes:
-            - identifier: node201
+          failure_nodes: []
           always_nodes: []
           credentials: []
       - identifier: Non-Prod
