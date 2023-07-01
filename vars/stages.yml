@@ -1,0 +1,6 @@
+---
+stages:
+- build
+- non-prod
+- staging
+- production

@@ -1,0 +1,9 @@
+---
+
+% for each software-step in stagestep %
+- name: {{ software-step }} for stage {{ stage }}
+  awx.awx.tower_job_template:
+     name: {{ software-step }} - {{ stage }}
+     playbook: {{ software-step }}.yml
+     credentials: {{ software-step }} Credential
+     
