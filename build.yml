@@ -8,56 +8,55 @@
   - name: create workflow for pipeline run
     - name: Create a workflow job template with workflow nodes in template
   awx.awx.workflow_job_template:
-    name: DevSecOps Workflow
+    name: Build
     inventory: Demo Inventory
     workflow_nodes:
-      - identifier: Build
+      - identifier: synchronize
         unified_job_template:
-          name: example-project
+          name: Synchronize latest version of pipeline
           organization:
             name: Default
           name: Build  
-          type: workflow_job_template
+          type: project-sync
         related:
           success_nodes: []
-          failure_nodes:
-            - identifier: node201
+          failure_nodes: []
           always_nodes: []
           credentials: []
-      - identifier: Non-Prod
+      - identifier: jenkinsbuild
         unified_job_template:
           organization:
             name: Default
-          name: Non-Prod
-          type: workflow_job_template
+          name: Jenkind - Build
+          type: job_template
         credentials: []
         related:
           success_nodes:
-            - identifier: Build
+            - identifier: synchronize
           failure_nodes: []
           always_nodes: []
           credentials: []
-      - identifier: Staging
+      - identifier: tcoebuild
         unified_job_template:
           organization:
             name: Default
-          name: Staging
-          type: workflow_job_template
+          name: TCOE - Build
+          type: job_template
         related:
           success_nodes: 
-            - identifier: Non-Prod
+            - identifier: jenkinsbuild
           failure_nodes: []
           always_nodes: []
           credentials: []
-      - identifier: Production
+      - identifier: artifactorybuild
         unified_job_template:
           organization:
             name: Default
-          name: Production
+          name: Artifactory - Built
           type: workflow_job_template
         related:
           success_nodes: 
-            - identifier: Staging
+            - identifier: tcoebuild
           failure_nodes: []
           always_nodes: []
           credentials: []
