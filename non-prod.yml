@@ -1,15 +1,13 @@
 ---
 - name: Workflow generator for Build statge of DevSecOps pipeline
   hosts: localhost
-  vars:
-    stage: build  
 
   tasks:
   - name: create workflow for pipeline run
-    - name: Create a workflow job template with workflow nodes in template
   awx.awx.workflow_job_template:
     name: Build
     inventory: Demo Inventory
+    extra_vars: '{ stage: nonprod }'
     workflow_nodes:
       - identifier: synchronize
         unified_job_template:

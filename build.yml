@@ -5,10 +5,11 @@
     stage: build  
 
   tasks:
-  - name: create workflow for pipeline run
+  - name: create workflow for Build pipeline run
     awx.awx.workflow_job_template:
       name: Build
       inventory: Demo Inventory
+      extra_vars: '{ stage: build }'
       workflow_nodes:
         - identifier: synchronize
           unified_job_template:
