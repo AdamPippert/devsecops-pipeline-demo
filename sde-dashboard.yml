@@ -1,0 +1,8 @@
+---
+- name: trigger unified dashboard
+  hosts: localhost
+  tasks:
+
+  - name: send project to SDE dashboard
+    debug:
+      msg: "project sent to SDE dashboard: stage {{ stage }}"

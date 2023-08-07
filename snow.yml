@@ -1,0 +1,8 @@
+---
+- name: trigger SNOW for CA
+  hosts: localhost
+  tasks:
+
+  - name: send project to SNOW
+    debug:
+      msg: "project sent to SNOW for CA: stage {{ stage }}"
