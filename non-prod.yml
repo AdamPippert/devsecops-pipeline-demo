@@ -1,63 +1,61 @@
 ---
-- name: Workflow generator for Non-Prod stage of DevSecOps pipeline
+- name: Workflow generator for Build statge of DevSecOps pipeline
   hosts: localhost
   vars:
-    stage: non-prod
-  
+    stage: build  
+
   tasks:
   - name: create workflow for pipeline run
     - name: Create a workflow job template with workflow nodes in template
   awx.awx.workflow_job_template:
-    name: DevSecOps Workflow
+    name: Build
     inventory: Demo Inventory
     workflow_nodes:
-      - identifier: Build
+      - identifier: synchronize
         unified_job_template:
-          name: example-project
+          name: Synchronize latest version of pipeline
           organization:
             name: Default
-          name: Build  
-          type: workflow_job_template
+          name: Non-Prod  
+          type: project-sync
         related:
-          success_nodes: []
-          failure_nodes:
-            - identifier: node201
+          success_nodes: jenkinsnonprod
+          failure_nodes: []
           always_nodes: []
           credentials: []
-      - identifier: Non-Prod
+      - identifier: jenkinsnonprod
         unified_job_template:
           organization:
             name: Default
-          name: Non-Prod
-          type: workflow_job_template
+          name: Jenkins - Non-Prod
+          type: job_template
         credentials: []
         related:
           success_nodes:
-            - identifier: Build
+            - identifier: tcoebuild
           failure_nodes: []
           always_nodes: []
           credentials: []
-      - identifier: Staging
+      - identifier: tcoebuild
         unified_job_template:
           organization:
             name: Default
-          name: Staging
-          type: workflow_job_template
+          name: TCOE - Non-Prod
+          type: job_template
         related:
           success_nodes: 
-            - identifier: Non-Prod
+            - identifier: artifactorynonprod
           failure_nodes: []
           always_nodes: []
           credentials: []
-      - identifier: Production
+      - identifier: artifactorynonprod
         unified_job_template:
           organization:
             name: Default
-          name: Production
-          type: workflow_job_template
+          name: Artifactory - Built
+          type: job_template
         related:
-          success_nodes: 
-            - identifier: Staging
+          success_nodes: []
           failure_nodes: []
           always_nodes: []
           credentials: []

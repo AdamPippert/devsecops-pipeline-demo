@@ -1,66 +1,77 @@
 ---
-- name: Workflow generator for Build statge of DevSecOps pipeline
+- name: Workflow generator for Build stage of DevSecOps pipeline
   hosts: localhost
   vars:
     stage: build  
 
   tasks:
   - name: create workflow for pipeline run
-    - name: Create a workflow job template with workflow nodes in template
-  awx.awx.workflow_job_template:
-    name: Build
-    inventory: Demo Inventory
-    workflow_nodes:
-      - identifier: synchronize
-        unified_job_template:
-          name: Synchronize latest version of pipeline
-          organization:
-            name: Default
-          name: Build  
-          type: project-sync
-        related:
-          success_nodes: []
-          failure_nodes: []
-          always_nodes: []
+    awx.awx.workflow_job_template:
+      name: Build
+      inventory: Demo Inventory
+      workflow_nodes:
+        - identifier: synchronize
+          unified_job_template:
+            name: Synchronize latest version of pipeline
+            organization:
+              name: Default
+            name: Build  
+            type: project-sync
+          related:
+            success_nodes: jenkinsbuild
+            failure_nodes: []
+            always_nodes: []
+            credentials: []
+        - identifier: jenkinsbuild
+          unified_job_template:
+            organization:
+              name: Default
+            name: Jenkins - Build
+            type: job_template
           credentials: []
-      - identifier: jenkinsbuild
-        unified_job_template:
-          organization:
-            name: Default
-          name: Jenkind - Build
-          type: job_template
-        credentials: []
-        related:
-          success_nodes:
-            - identifier: synchronize
-          failure_nodes: []
-          always_nodes: []
-          credentials: []
-      - identifier: tcoebuild
-        unified_job_template:
-          organization:
-            name: Default
-          name: TCOE - Build
-          type: job_template
-        related:
-          success_nodes: 
-            - identifier: jenkinsbuild
-          failure_nodes: []
-          always_nodes: []
-          credentials: []
-      - identifier: artifactorybuild
-        unified_job_template:
-          organization:
-            name: Default
-          name: Artifactory - Built
-          type: workflow_job_template
-        related:
-          success_nodes: 
-            - identifier: tcoebuild
-          failure_nodes: []
-          always_nodes: []
-          credentials: []
-  register: result 
+          related:
+            success_nodes:
+              - identifier: autbuild
+            failure_nodes: []
+            always_nodes: []
+            credentials: []
+        - identifier: autbuild
+          unified_job_template:
+            organization:
+              name: Default
+            name: SonarQube AUT - Build
+            type: job_template
+          related:
+            success_nodes: 
+              - identifier: securitybuild
+            failure_nodes: []
+            always_nodes: []
+            credentials: []
+        - identifier: securitybuild
+          unified_job_template:
+            organization:
+              name: Default
+            name: Security - Build
+            type: workflow_template
+          related:
+            success_nodes:
+              - identifier: artifactorybuild
+            failure_nodes: []
+            always_nodes: []
+            credentials: []
+
+        - identifier: artifactorybuild
+          unified_job_template:
+            organization:
+              name: Default
+            name: Artifactory - Build
+            type: job_template
+          related:
+            success_nodes: []
+            failure_nodes: []
+            always_nodes: []
+            credentials: []
+    register: result 
 
 
 
